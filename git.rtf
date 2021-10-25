@@ -1,0 +1,52 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2578
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fnil\fcharset0 Monaco;
+}
+{\colortbl;\red255\green255\blue255;\red47\green180\blue29;\red0\green0\blue0;\red27\green29\blue31;
+\red244\green244\blue244;\red42\green44\blue51;\red249\green249\blue249;\red83\green83\blue83;\red147\green0\blue147;
+}
+{\*\expandedcolortbl;;\cssrgb\c20238\c73898\c14947;\csgray\c0;\cssrgb\c14118\c15294\c16078;
+\cssrgb\c96471\c96471\c96471;\cssrgb\c21961\c22745\c25882;\cssrgb\c98039\c98039\c98039;\cssrgb\c40000\c40000\c40000;\cssrgb\c65098\c14902\c64314;
+}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+#open terminal window and go to the project directory\
+Cd ~/Desktop/BEC\
+\
+#initiate git and push to GitHub\
+git config \'97global user.name \'93Mohamed Noureldein\'94\
+Git config \'97global user.email \'93mhn13@mail.aub.edu\'94\
+Git config \'97global color.ui true\
+Git init\
+Git status\
+Git add \'931-
+\f1\fs22 \cf2 \CocoaLigature0 Spatial-Transcriptomics-Quick-Analysis\'94\
+Git add 1-Spatial-Transcriptomics-Quick-Analysis\
+Git commit \'97a -m \'93initial commit\'94\
+Git status # should state nothing to commit\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 ssh -T git@github.com\
+# get a token by going to GitHub accounts \'97> Developer settings \'97> personal access token \'97> generate new token and copy and paste it in the following command\
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf4 \cb5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 git remote set-url origin  https://m-noureldein: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@github.com/m-noureldein/BEC.git\
+Git remote -v
+\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 Git push origin master\
+\
+#resetting\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24\fsmilli12350 \cf6 \cb7 \expnd0\expndtw0\kerning0
+\CocoaLigature1 git fetch \cf8 --all\cf6 \
+git \cf9 reset\cf6  \cf8 --hard origin/master
+\f1\fs22 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 \
+\
+
+\f0\fs24 \cf0 \CocoaLigature1 \
+}
