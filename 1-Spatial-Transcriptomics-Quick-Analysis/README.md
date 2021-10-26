@@ -42,7 +42,7 @@ p2 <- SpatialDimPlot(slide1, label = TRUE, label.size = 3)
 p1 + p2
   </code>
 </pre>
-<p><img src="~/Desktop/BEC/1-Spatial-Transcriptomics-Quick-Analysis/plot1.png" alt="description" width="800" height="400" /></p>
+<p><img src="/plot1.png" alt="description" width="800" height="400" /></p>
 <h2>Plot the expression of certain features</h2>
 <pre>
   <code>
@@ -50,11 +50,11 @@ p1 + p2
 SpatialFeaturePlot(slide1, features = "Hpca", alpha = c(0.1, 1))
   </code>
 </pre>
-<p><img src="~/Desktop/BEC/1-Spatial-Transcriptomics-Quick-Analysis/plot2.png" alt="description" width="400" height="400" /></p>
+<p><img src="/plot2.png" alt="description" width="400" height="400" /></p>
 <h2>Highlight cells that belong to certain clusters</h2>
 <pre>
   <code>
 SpatialDimPlot(slide1, cells.highlight = CellsByIdentities(object = slide1, idents = c(2, 1, 4)), facet.highlight = TRUE, ncol = 3)
   </code>
 </pre>
-<p><img src="~/Desktop/BEC/1-Spatial-Transcriptomics-Quick-Analysis/plot3.png" alt="description" width="800" height="400" /></p>
+<p><img src="/plot3.png" alt="description" width="800" height="400" /></p>
