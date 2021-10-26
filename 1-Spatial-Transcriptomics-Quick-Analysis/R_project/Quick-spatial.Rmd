@@ -18,7 +18,7 @@ library(dplyr)
   
 ## Perform the analysis  
 ```{r, eval=FALSE}
-# download the `1-Spatial-Transcriptomics-Quick-Analysis` directory from the github repository and copy/paste the absolute path in the following line. Hint: to get the absolute path, you can navigate to the filtered_feature_bc_matrix folder that you have downloaded using the the "Files" panel in Rstudio then you can press "More" and "copy file path to clipboard"
+#download the `1-Spatial-Transcriptomics-Quick-Analysis` directory from the github repository and copy/paste the absolute path in the following line. Hint: to get the absolute path, you can navigate to the filtered_feature_bc_matrix folder that you have downloaded using the "Files" panel in Rstudio then you can press "More" and "copy file path to clipboard"
 data_dir <- ('~/Desktop/BEC/1-Spatial-Transcriptomics-Quick-Analysis/Data')
 slide1 <-Load10X_Spatial(data.dir=data_dir, slice='slide1')
 # investigate the quality control parameters (RNA counts)
