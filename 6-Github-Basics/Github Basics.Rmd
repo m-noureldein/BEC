@@ -1,0 +1,45 @@
+---
+title: "Github"
+output:
+  md_document:
+    variant: markdown_github
+---
+# Basic Github Commands to Commit analysis-projects folder  
+```
+#open terminal window and go to the project directory
+cd /nfs/turbo/umms-efeldman/mnoureld/analysis-projects
+```  
+# Initiate git and push to GitHub  
+```
+git config --global user.name "Mohamed Noureldein"
+git config --global user.email "mhn13@mail.aub.edu"
+git config --global color.ui true
+git init
+git status
+```  
+# Once you update the folder, add it to git and update the github repository as follows:  
+```  
+git add *
+git add *
+git commit -a -m "initial commit"
+git status # should state nothing to commit
+git remote add origin  https://m-noureldein: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@github.com/m-noureldein/analysis-projects.git 
+git push origin master
+```  
+# If you get authentication error, get a token by going to GitHub accounts --> Developer settings --> personal access token "check all the boxes" --> generate new token and copy and paste it in the following command:  
+```
+git remote add origin  https://m-noureldein:"TOKEN"@github.com/m-noureldein/analysis-projects.git 
+git remote -v
+git push origin master
+```  
+# In case none of the above worked, do resetting as follows:  
+```
+git fetch --all
+git reset --hard origin/master
+```  
+# In case you want to create ssh key when you run it on a new computer  
+```
+ssh -T -ai ~/.ssh/id_ed25519 git@github.com
+ssh -v -o "IdentitiesOnly=yes" -i ~/.ssh/id_ed25519 git@github.com
+ssh-keygen -t ed25519 -C "mhn13@mail.aub.edu" # the email used to create github repository
+```  
