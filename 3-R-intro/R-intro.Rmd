@@ -1,0 +1,639 @@
+---
+title: "Introduction to R"
+output:
+  md_document:
+    variant: markdown_github
+---
+  
+# Introduction to R  
+  
+## Install R and RStudio  
+  
+Install Rstudio from <https://rstudio.com/products/rstudio/>
+Create a new project by going to file -> New project -> New directory -> empty project, choose a name and a location.
+Create a new script file file -> New file -> R script
+N.B. the new created folder on your pc for this R project is its default directory so to make things easier, copy the files that you will be working on to this directory.  
+  
+## Intro to R
+link:<https://mothur.org/wiki/r_tutorial/>
+
+## Introduction to the R environment
+
+The R environment is a command line where you enter commands.  When you 
+fire up R, you will see the following:
+```
+    R version 2.10.0 (2009-10-26)
+    Copyright (C) 2009 The R Foundation for Statistical Computing
+    ISBN 3-900051-07-0
+    
+    R is free software and comes with ABSOLUTELY NO WARRANTY.
+    You are welcome to redistribute it under certain conditions.
+    Type 'license()' or 'licence()' for distribution details.
+    
+      Natural language support but running in an English locale
+    
+    R is a collaborative project with many contributors.
+    Type 'contributors()' for more information and
+    'citation()' on how to cite R or R packages in publications.
+    
+    Type 'demo()' for some demos, 'help()' for on-line help, or
+    'help.start()' for an HTML browser interface to help.
+    Type 'q()' to quit R.
+```
+  
+
+The ">" is the prompt where you enter the commands.  I will not be putting the prompt in the tutorial.  Let's get started by entering the following
+```{r}
+2+2
+```
+This output tells you the obvious result that 2+2 is 4.  R can be used as an over-grown calculator, but it is so much more than that. It's really a high level programming language to give you publication worthy graphics and perform complex statistical analyses.  
+  
+If you want to quit R, run the following:  
+```
+q()
+```  
+You will encounter the follwing prompt:  
+```
+Save workspace image? [y/n/c]: 
+```  
+If you select "y" then the next time you run R, it will recall your previous commands.  
+```
+y
+```  
+Fire up R again and hit the up arrow twice.  You will see the following:
+```
+> 2+2
+```
+As a short cut you can also type the following to get the same effect when quitting R:
+```
+q("yes")
+```  
+Something to note as you go through the tutorial is the use of the pound (#) symbol.  This indicates that what follows is a comment.  
+For example:  
+```{r}
+2+2            #this is a comment
+```  
+  
+Another useful feature is the inline help feature:  
+```{r}
+?mean
+```  
+  
+This will output a help file for the 'mean' function.  You can scroll through it with the arrow keys as well as the space bar.  At the end of the  help text are one or more examples of how to use the function. You can execute this example by copying and pasting the text.  Alternatively, you  can use the 'example' command:
+```{r}
+example(plot)
+```  
+  
+Not sure what the function is that you want?  Use the '??' function...  
+```{r}
+??pca
+```  
+  
+This will tell you the list of functions and packages that have some reference to "pca".  
+  
+Running "2+2" gets you the answer of "4".  But what if you want to store that value?  Save it as a variable...  
+```{r}
+x <- 2+2
+
+# or
+x = 2+2
+x
+```  
+  
+The left arrow is the preferred method of assigning values to variables.  
+  
+Now you can manipulate that variable:
+```{r}
+x + 2
+```  
+  
+You can run two commands on the same line by separating the commands with a semicolon:  
+```{r}
+x<-2+2;x+2
+```  
+  
+To see what variables have been declared:  
+  
+```{r}
+ls()
+```  
+  
+To remove variables you no longer need:  
+```{r}
+rm(x)
+```  
+  
+Combining the last two commands will remove all of the variables stored in memory:  
+```{r}
+rm(list=ls())
+ls()
+```  
+  
+To keep our examples relevant, let's quickly discuss how to read in a table.  
+The frist two commands below are not necessarily needed if you know you are in the same folder as your data  
+```{r}
+getwd()                            # is this the directory we want to be in?
+setwd("~/Desktop/BEC/3-R-intro")         # if not let's change directories
+seq1 <- read.csv(file="GEO_table.csv", header=T)
+```  
+  
+The read.table command will read in your data table and keep the column headings.  
+These data represent the length of sequece in the Costello stool dataset after removing primers, barcodes, and low quality bases.  To make the data easier to manipulate you can do the following:  
+```{r}
+head(seq1)  # inspect the first few lines of the file
+colnames(seq1)        # see the column heading names
+seq1$B[1:10]    # get the column "B" out of the table
+attach(seq1)          # "attach" the table so that you don't need the "$"
+B[1:10]
+```  
+  
+Don't worry if you don't understand everything in the last several lines.
+The important thing is to see that there are different ways to get the same output.  
+  
+## Variables  
+  
+Technically speaking everything in R is an object.  That may be a bit into the weeds for most people.  But try to keep up.  There are many types of objects in R.  We'll start with these:  
+    * Numeric values  
+    * Character values  
+    * Logical values  
+    * Vectors  
+    * Matrices  
+  
+### Numeric Values  
+```{r}
+# The variable we used above, x, is a numeric value.  Here are some other examples:
+x <- 2/3; x
+y <- 31.7
+z <- 2.1e7                         # same as 2.1*10^7
+longAndSilly.variable.name <- pi/3 # an example of a long variable name
+```  
+  
+Although it is a matter of personal style, ideally, your variable names will have some meaning to you.  For example:  
+```{r}
+genomeSize <- 4.5e6
+#16SCopyNumber <- 6           # illegal variable name
+rrnCopyNumber <- 6
+```  
+  
+A wide variety of arithmetic functions can be applied to these types of variables:  
+```{r}
+log(x)           # natural logarithm
+log2(x)          # base 2 logarithm
+log10(x)         # base 10 logarithm
+exp(x)           # exponent
+sqrt(x)          # square root
+abs(x)           # absolute value
+floor(x)         # the largest integers not greater than x
+ceiling(x)       # the smallest integers not less than x
+x %% 2           # remainder or modulo operator
+``` 
+  
+### Character values  
+```{r}
+#  Strings of character values are useful for storing text information
+
+A <- "Alanine"; A
+R <- "Argenine"; R
+N <- "Asparagine"; N
+```  
+  
+The paste function is useful for converting numerical information into a string:
+```{r}
+x<-3.14159
+text<-paste("x=", x, " y=", y, sep="")
+text
+
+#  or
+text<-paste("x=", format(x, digits=3), " y=", y, sep="")
+text
+```  
+  
+### Logical values  
+```{r}
+#  Logical variables can have one of two values - TRUE or FALSE
+x <- TRUE
+y <- FALSE
+!x              # NOT operator 
+x && y          # AND operator 
+x & y           # bitwise AND operator (mainly for vectors) 
+x || y          # OR operator 
+x | y          # bitwise OR operator (mainly for vectors) 
+x == y          # is equal operator 
+x != y          # is not equal operator
+```  
+  
+We can also perform logical operators on numerical variables:  
+```{r}
+x <- 5
+y <- 3
+
+x > y          # greater than operator
+x >= y         # greater than or equal to operator
+x < y          # less than operator
+x <= y         # less than  or equal tooperator
+x == y         # is equal to operator
+x != y         # is not equal to operator
+```  
+  
+We can also convert numerical values to logical values:  
+```{r}
+x <- 0
+as.logical(x)
+as.logical(y)
+```  
+  
+We can also use logical operators on strings:  
+```{r}
+x <- "ATG"
+y <- "CCC"
+
+x > y          # greater than operator
+x >= y         # greater than or equal to operator
+x < y          # less than operator
+x <= y         # less than  or equal tooperator
+x == y         # is equal to operator
+x != y         # is not equal to operator
+```  
+  
+### Vectors  
+Vectors are a one-dimensional set of values of the same type. You can read in vectors from a file or create them on the fly.  Here are several examples:  
+```{r}
+19:55                   # list the values from 19 to 55 by ones
+c(1,2,3,4)              # concatenate 1, 2, 3, 4, 5 into a vector
+rep("red", 5)           # repeat "red" five times
+seq(1,10,by=3)          # list the values from 1 to 10 by 3's
+seq(1,10,length.out=20) # list 20 evenly spaced elements from 1 to 10
+seq(1,10,len=20)        # same thing; arguments of any function can be 
+                        # abbreviated as long as the abbreviation is unique
+```  
+  
+These can be combined as well:  
+```{r}
+c(rep("red", 5), rep("white", 5), rep("blue", 5))
+rep(c(0,1), 10)
+```  
+  
+And they can be assigned to variables:  
+```{r}
+x <- seq(1,100,by=0.5)
+x
+
+code <- c("A", "T", "G", "C")
+```  
+  
+Note that in contrast to many programming languages, vectors in R are indexed such that the first value is 1 NOT 0.  
+```{r}
+code[2]
+code[0]
+code[-1]
+code[c(1,2)]
+```  
+  
+Recall that we've already seen vectors in the preamble to this tutorial...  
+```{r}
+B[1:10]
+```  
+  
+You can easily determine the length of a vector  
+```{r}
+length(code)
+code[length(code)]
+length(B)
+```  
+  
+Logical operators can also be used on vectors...  
+```{r}
+tf <- x > 50
+isLong <- B > 200    # do you know what this is doing?
+```  
+  
+And used to select portions of vectors  
+```{r}
+x[tf]
+```  
+  
+One of the awesome things about vectors is that you can perform algebraic manipulations on them.  These types of operations are "elementwise" meaning that the operation is applied to each operation  
+```{r}
+2 * x
+x + x
+log(x)
+```  
+  
+To define a vector without giving it any values  
+```{r}
+z <- numeric(5)             #  This creates a numerical vector with 5 zeros
+z[3] <- 10
+z
+z[1:3] <- 5
+z
+z[10] <- pi
+
+t <- character(5)
+t[4] <- "DNA rocks!"
+```  
+  
+You can also create vectors that are indexed by character strings.  In some programming languages these are called hash-maps or look-up tables.  
+```{r}
+v <- numeric(0)
+v["a"] <- 1.23498
+v["t"] <- 2.2342
+v["c"] <- 3
+v["g"] <- 4
+v
+```  
+  
+You can get the name of each cell in the vector:  
+```{r}
+names(v)
+names(v) <- NULL  # this removes names attribute
+v
+
+names(B) <- seq1$Gene.Symbol
+B[1:10]
+```  
+  
+Alternatively, we could define v2 as:  
+```{r}
+v2 <- c(A=1.23498,T=2.2342,C=3,G=4)
+v2
+v2 * 2
+as.vector(v2)  # strips out names
+is.vector(v2)  # checks if v is a vector
+```  
+  
+We can access elements of 'v' by their labels  
+```
+v2["a"]
+v2[["a"]]      # strips the name associated with value 1
+```  
+  
+There are many ways to get a value out of a vector.  We've already seen some of these  
+```{r}
+v <- floor(runif(10, 1,10)) # create a vector with 10 values randomly drawn from 
+v                   # the range of 1 to 10
+n <- 3
+v[n]                # n-th element
+v[-n]               # all but the n-th element
+v[1:n]              # first n elements
+v[-(1:n)]           # elements from n+1 to the end
+v[c(2,4)]           # 2-nd and 4-th elements
+v["name"]           # element named "name"
+v[v > 6]            # elements greater than 6
+v[v > 4 & v < 6]    # elements between 4 and 6
+v[v %in% c(1,3,7)]  # elements in a given set
+v[!is.na(v)]        # subsequence of v consisting of non-missing values of v
+v[is.na(v)] <- 0    # sets all missing values to 0
+```
+  
+There are a variety of operators that take vectors as input  
+```{r}
+length(v)          # length of vector v
+mean(v)            # mean of v
+median(v)          # median of v
+sd(v)              # standard deviation of v
+var(v)             # variance of v
+mad(v)             # median absolute deviation of v
+min(v)             # min of v
+max(v)             # maximal element of v
+which.min(v)       # returns the index of the smallest element of v
+which.max(v)       # returns the index of the greatest element of v
+summary(v)         # return descriptive statistics of v
+sum(v)             # sum of elements of v
+prod(v)            # product of all elements of v
+sort(v)            # ascending sort the values of v
+sort(v, decreasing=T)# descending sort the values of v
+order(v)           # the order of the sorted values of v
+v[order(v)]        # gives the same order as sort(v)
+rev(v)             # reverse the order of v
+unique(v)          # give the unique values of v
+all(v)             # returns TRUE if all values of a logical vector v are TRUE,
+                   # otherwise returns FALSE
+any(v)             # returns TRUE if at least one value of a logical vector v is
+                   # TRUE, otherwise returns FALSE
+```  
+  
+###  Exercises:  
+#### Calculate the following on the data we read in from the seq1 file:  
+1- number of genes  
+2- number of genes with P.value<0.05  
+3- mean P.value  
+4- median P.value  
+5- standard deviation of P.value  
+  
+Note that if a vector contains missing values then all above numerical routines are going to return NA value. In order to skip missing values of 'v' while computing some seq1 statistics of 'v', one can set na.rm to TRUE as in the following example:  
+```{r}
+v <- floor(runif(10, 1,10)) 
+v[11] = NA
+mean(v)
+mean(v, na.rm=T)
+```  
+  
+Say you want to search a character vector for a feature of the strings. To do this you can use the grep function and its relatives to get the indices of values in the vector that match the search:
+```{r}
+shades.of.red <- grep("red", colors())
+colors()[shades.of.red]
+```  
+  
+### Tables & Matrices  
+  
+Tables and matrices are multi-dimensional sets of values of multiple or the same type.  We already read in a table in the preamble of this tutorial...  
+```{r}
+getwd()                            # is this the directory we want to be in?
+setwd("~/Desktop/BEC/3-R-intro")         # if not let's change directories
+seq1 <- read.csv(file="GEO_table.csv", header=T)
+```  
+  
+Here "seq1" is a table of values describing some characteristics of the sequences after removing the barcodes, primers, and low quality base calls. Tables and matrices are indexed much like vectors...  
+```{r}
+seq1[1,1]             # get the name of the first sequence in the table
+seq1[1,c(1,4)]        # get the name and length of the first sequence 
+# seq1[1,]              # get all of the data in the first row
+seq1[1,4]              # get all of the data in the column labelled "B"
+# seq1[,"B"]       # get all of the data in the column labelled "B"
+# seq1$B           # get all of the data in the column labelled "B"
+# attach(seq1);B   # get all of the data in the column labelled "B"
+detach(seq1)
+```  
+  
+It should be clear taht the last four commands above gave the same data. With the exception of the first command, each of these commands returns a vector.  
+  
+When reading in a table it is always nice to get a handle of what you're working with...  
+```{r}
+dim(seq1)             # number of rows and columns in "seq1"
+nrow(seq1)            # number of rows "seq1"
+ncol(seq1)            # number of columns in "seq1"
+colnames(seq1)        # names of the columns in "seq1"
+# rownames(seq1)        # names of the rows in "seq1"
+seq1[1:10,]           # get the first 10 rows of data from the "seq1" file
+```  
+  
+Looking at the output from the 'rownames' command we know we can do better than those row names.  Let's use the sequence names as the row names...  
+```{r}
+rownames(seq1)<-seq1$seqname
+seq1<-seq1[,-1]
+seq1[1:10,]
+```  
+  
+Let's look at how we could get the row indices corresponding to B larger than 10:  
+```{r}
+(1:length(B))[B > 10]
+```  
+  
+To get the sequence names we could then do...  
+```{r}
+rownames(seq1)[(1:length(B))[B > 10]]  #wonky
+rownames(seq1)[seq1$B > 10]              #better
+```  
+  
+Earlier we showed how to sort vectors.  Let's sort B by the largest P.Value...  
+```{r}
+pOrder <- order(seq1$P.Value)
+seq1[pOrder,c("P.Value", "B")][1:10,]
+```  
+  
+You can see that's not exactly what we were hoping for.  We can actually use the order command to sort on multiple columns...  
+```{r}
+BpOrder <- order(seq1$P.Value, seq1$B)
+P.Value <- seq1[BpOrder,c("P.Value", "B")]
+P.Value[1:10,]
+```  
+  
+Let's write the sorted P.Values to a new file  
+```{r}
+write(P.Value$B,file="pvalue.txt")
+```  
+  
+To read a vector in from a file...  
+```{r}
+pvalue <- scan("pvalue.txt")
+```  
+  
+Those two commands are for writing and reading vectors.  If we wanted to write and read a table we'd do the following...   
+```{r}
+write.table(P.Value,file="P.Values.txt", quote=F)
+```  
+  
+If you open P.Values.txt in a text editor you will see that there are three columns of data, but only two headings.  If you have one fewer headings than columns, R will use the first column of data as the rownames when you try to read it back in...
+```{r}
+table<-read.table(file="P.Values.txt", header=T)
+```  
+  
+There are some functions that take matrices/tables as input:  
+```{r}
+m <- matrix(floor(runif(100, 1, 10)), nrow=10, ncol=10)    #create a 10 x 10 matrix
+t(m)             # transpose the matrix
+1/m              # take each value of m and find it's reciprocal
+m * m            # calculate the square of each value in m
+m %*% m          # performs matrix multiplication
+crossprod(m,m)   # performs the cross product
+rowSums(m)       # calculate the sum for each row
+colSums(m)       # calculate the sum for each column
+lower.tri(m)     # find the indices that are below the diagonal
+m[lower.tri(m)]  # give the lower triangle of m
+diag(m)          # the values on the diagonal of m
+det(m)           # the determinent of m
+```  
+  
+If you try to get the mean or standard deviation of a row or column you'll struggle mightilly with these commands.  Instead you need to use the "apply" command:  
+```{r}
+mean(m)
+apply(m, 1, mean)  # get the mean for each row (that's the 1)
+apply(m, 2, mean)  # get the mean for each column (that's the 2)
+apply(m, 1, sum)   # get the sum for each row - same as rowSums(m)
+apply(m, 2, sum)   # get the sum for each column - same as colSums(m)
+```  
+  
+### Factors  
+  
+Factors are categorical variables.  The "seq1" table doesn't exactly contain any categorical data.  For the purposes of discussion, let's use the Gene.Symbol column as a categorical data type.  The important thing is that factors have discrete levels.  For example, in microbial ecology, we might think of soil types, body sites, a person's sex, or whether a site is polluted as categorical variables.  
+  
+Factors can be created using factor() routine.  
+```{r}
+seq1$Gene.Symbol <-factor(seq1$Gene.Symbol)
+levels(seq1$Gene.Symbol)[1:10]
+```  
+  
+If we wanted to convert our factors from factors to strings or to numbers, we could do the following...  
+```{r}
+seq1$Gene.Symbol <- as.character(seq1$Gene.Symbol)
+```  
+  
+We might be interested to see if sequence length varies with the length of the homopolymer in the sequence.  We can do this with the `aggregate` command and treating polymer as a factor...  
+```{r}
+attach(seq1)
+aggregate(seq1$B, list(Gene.Symbol), mean)[1:10,]
+aggregate(seq1$B, list(Gene.Symbol), median)[1:10,]
+aggregate(seq1$B, list(Gene.Symbol), sd)[1:10,]
+```  
+  
+Similar to the aggregate command, the "by" command will allow you to take all of the columns and perform an operation on the...  
+```
+by(seq1, seq1["Gene.Symbol"], summary)[1:10,]
+```  
+    
+## Programming basics
+  
+R is a pretty high-level programming language with extensive functionality built in.  The strength of R is that as a user you can add to this to suit your needs.  
+  
+### Customized functions  
+  
+Want to make your own function or package?  It's relatively simple. The general syntax is as follows:  
+```{r}
+functionName <- function(x){
+       #the stuff goes here
+}
+```  
+    
+So we might write a trivial script to calculate the square root of a value.  
+```{r}
+my.sqrt<-function(x){
+   sqrt(x)
+}
+
+my.values <- 1:10
+my.sqrt(my.values)
+```  
+  
+The output of "my.sqrt(my.values)" should be the same as the following:  
+```{r}
+sqrt(1:10)
+```  
+  
+### for loops  
+  
+If you want to do something to each value in a vector or to carry out some procedure a specific number of times, you can do that with a for loop.  
+Let's sum the square of all the numbers between 1 and 10:  
+```{r}
+for.sum <- 0;
+for(i in 1:10){
+   for.sum = for.sum + i^2
+}
+for.sum
+```  
+  
+### If-then-else statements  
+  
+When you meet a fork in the road, take it.  Well, ok, maybe not, but in R you can use logic statements to make decisions.  For example, let's create a vector of factors to indicate if P.Value is significant or not:  
+```{r}
+significance <- numeric(nrow(seq1))
+
+for ( i in 1:length(seq1$P.Value) ){
+
+  if ( seq1$B[i] < 0.06 ){
+    significance[i] <- "parially significant"
+  }else if ( seq1$P.Value[i] < 0.05 ){
+    significance[i] <- "significant"
+  }else {
+    significance[i] <- "non-significant"
+  }
+}
+
+significance <- factor(significance)
+significance[1:10]
+```  
+  
+Attach the significance column to the `seq1` table:  
+```{r}
+seq1$significance <- significance
+head(seq1)
+```  
