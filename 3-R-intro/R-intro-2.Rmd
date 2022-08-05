@@ -1,0 +1,242 @@
+---
+title: "Introduction to R 2"
+output:
+  md_document:
+    variant: markdown_github
+---
+  
+# Introduction to R 2  
+  
+## Intro to R
+link:<https://mothur.org/wiki/r_tutorial/>
+
+## Graphics  
+  
+R has an amazing array of options for graphics.  When someone gives a talk you can tell that they used Excel because the plots look uniformly awful. In contrast you can tell that someone used R because they look awesome. We will just scratch the surface of its graphics capabilities here.  For more details about these functions remember to use ?`<function name>`. For more information about the more complicated and sophisticated graphics libraries consult:  
+  
+     Murrell, P. (2005) _R Graphics_. Chapman & Hall/CRC Press.
+  
+### Histogram  
+  
+Let's look at the distribution of sequence lengths in our seq.sum table  
+```{r}
+getwd()                            # is this the directory we want to be in?
+setwd("~/Desktop/BEC/3-R-intro")         # if not let's change directories
+seq1 <- read.csv(file="GEO_table.csv", header=T)
+
+hist(seq1$B)
+```  
+  
+Let's gussy it up a bit...  
+```{r}
+hist(seq1$B, col="skyblue", freq=T, xlab="B",
+   main="Distribution of B")
+box()
+```  
+  
+The hist command actually returns a value other than the graph...  
+```{r}
+histData <- hist(seq1$B, col="skyblue", freq=T, xlab="B",
+   main="Distribution of B")
+histData
+```  
+  
+### Stripcharts  
+  
+Append a significance column and create a strip chart of B for each significance class...
+
+```{r}
+significance <- numeric(nrow(seq1))
+
+for ( i in 1:length(seq1$P.Value) ){
+
+  if ( seq1$B[i] < 0.06 ){
+    significance[i] <- "parially significant"
+  }else if ( seq1$P.Value[i] < 0.05 ){
+    significance[i] <- "significant"
+  }else {
+    significance[i] <- "non-significant"
+  }
+}
+
+significance <- factor(significance)
+seq1$significance <- significance
+
+stripchart(seq1$B~seq1$significance, ylab="B", 
+   xlab="Significance")
+
+stripchart(seq1$B~seq1$significance, method="jitter", 
+   ylab="B", xlab="Significance")
+
+stripchart(seq1$B~seq1$significance, method="jitter", vertical=T, 
+   ylab="B", xlab="Significance")
+
+stripchart(seq1$B~seq1$significance, method="jitter", vertical=T,
+   jitter=0.4, pch=1, cex=.2, col=rainbow(5), ylab="B", 
+   xlab="Significance")
+```  
+  
+### Boxplot  
+  
+Those strip charts had a lot of data and may be too difficult to interpret.  
+Instead, let's try to represent the data as box plots  
+```{r}
+boxplot(seq1$B~seq1$significance, ylab="B", 
+   xlab="Significance")
+```  
+  
+### Pie charts  
+  
+Pie charts are a generally bad way to represent data.  For a good chuckle  
+check out the "Note" section of...  
+```{r}
+?pie
+
+sigCount <- aggregate(seq1$significance, list(significance), length)
+sigFreq <- sigCount$x / length(seq1$significance)
+pie(sigFreq)
+```  
+  
+### Bar plots  
+```{r}
+barplot(polymerCount$x, names.arg=polymerCount$Group, xlab="Significance",
+   ylab="Number of Sequences")
+barplot(polymerCount$x, names.arg=polymerCount$Group, ylab="Significance",
+   xlab="Number of Sequences", horiz=T)
+```
+
+
+shared<-read.table(file="stool.final.tx.shared", header=T)
+rownames(shared)<-shared$V2
+shared<-as.matrix(shared[,-c(1,2,3)])
+colnames(shared)<-paste("Phylotype", 1:ncol(shared), sep="")
+shared.ra<-shared/apply(shared, 1, sum) # calculate the relative abundance of 
+                                       # each phylotype
+
+bar.col<-c(rep("pink", 12), rep("blue", 12))
+
+barplot(shared.ra[,1:5], col=bar.col)
+barplot(shared.ra[,1:5], beside=T, col=bar.col)
+barplot(t(shared.ra), col=rainbow(200))
+
+
+
+#  --Dot/Line graphs--
+#  We might be interested in plotting the first two dimensions of a PCoA or 
+#  NMDS plot.  Let's do this with data generated in the Costello stool analysis
+#  tutorial.  The necessary file is in your folder.
+
+nmds<-read.table(file="stool.final.an.thetayc.0.03.lt.nmds.axes", header=T)
+plot(nmds$axis1, nmds$axis2)
+
+#  or
+
+plot(nmds$axis2~nmds$axis1)
+
+#  Looking at the group names in the nmds table we see that the first 12 sample
+#  names are from women ("F") and the last 12 are from men ("M").  There are
+#  more elegant ways to do this, but for beginners, this will work...
+
+nmds.col<-c(rep("pink", 12), rep("blue", 12))
+
+plot(nmds$axis2~nmds$axis1, col=nmds.col, xlab="Axis 1", ylab="Axis 2")
+legend(x=0.3, y=0.6, legend=c("Female", "Male"), pch=1, col=c("pink", "blue"))
+
+plot(nmds$axis2~nmds$axis1, col=nmds.col, xlab="Axis 1", ylab="Axis 2", pch=18,
+   cex=2)
+legend(x=0.3, y=0.6, legend=c("Female", "Male"), pch=18, cex=1, col=c("pink", 
+   "blue"))
+
+#  Although these points aren't linked you could connect them...
+
+plot(nmds$axis2~nmds$axis1, col=nmds.col, xlab="Axis 1", ylab="Axis 2", pch=18, 
+   cex=2, type="b")
+legend(x=0.3, y=0.6, legend=c("Female", "Male"), pch=18, cex=1, lty=1, 
+   col=c("pink", "blue"))
+
+#  You can also overlay two graphs on top of each other using the points
+#  command.  Here we'll put the cumulative number of sequences that have that 
+#  sequence length or higher.
+
+hist(seq1$B, col="skyblue", freq=T, xlab="Sequence Length",
+   main="Distribution of Sequence Lengths", ylim=c(0,length(seq1$B)))
+points(sort(seq1$B), length(seq1$B):1, type="l")
+box()
+
+
+#  --Composite graphics--
+#  You can make graphics in R using multiple panes.  Let's say we wanted to 
+#  create a figure that had two panes representing histograpms for sequences
+#  a maximum Significance of 5 and one for the 6's
+
+par(mfrow=c(2,1))
+hist(seq.sum[seq.sum$polymer==5,]$nbases, col="skyblue", freq=T, 
+   xlab="Length of sequences with a maximum polymer length of 5", main="", 
+   xlim=c(0,300), breaks=seq(0,260, 20))
+hist(seq.sum[seq.sum$polymer==6,]$nbases, col="red", freq=T,
+   xlab="Length of sequences with a maximum polymer length of 6", main="", 
+   xlim=c(0,300), breaks=seq(0,260, 20))
+par(mfrow=c(1,1))
+
+#===============================================================================
+#
+#  Libraries
+#
+#===============================================================================
+#
+#  One of the amazing aspects of R is that there is a broad and diverse array
+#  of scientists engaged in adding features to the program by contributing
+#  packages.  You can often find packages you might be interested in by 
+#  googling "r `<insert type of function>`" that you want.  For example, if you'd
+#  like to visualize PCoA or NMDS data in 3-D, you will likely stumble up on 
+#  the rgl package.  You will need to install and load the package to use the 
+#  plot3d command with your data
+
+install.packages("rgl")
+library(rgl)
+
+pcoa<-read.table(file="stool.final.an.thetayc.0.03.lt.pcoa.axes", header=T)
+rownames(pcoa)<-pcoa$V1
+pcoa<-pcoa[,-1]
+plot3d(pcoa, col=nmds.col, type="s")
+
+#  Although the functionality is already in mothur, other packages that may
+#  interest you include vegan and ecodist
+
+#===============================================================================
+#
+#  Statistics
+#
+#===============================================================================
+#
+#  The R package has a wide array of statistical tools built in and created by
+#  other developers.  If you can imagine the test, it is probably already
+#  implemented in R
+
+mf <- c(rep("F", 12), rep("M", 12))
+t.test(shared.ra[,"phylotype1"]~mf)
+t.test(shared.ra[,"phylotype5"]~mf)
+
+wilcox.test(shared.ra[,"phylotype1"]~mf)
+wilcox.test(shared.ra[,"phylotype5"]~mf)
+
+
+  
+##  More resources  
+  
+###  Websites:  
+  
+1- RTFM: <https://www.r-project.org/>  
+2- R tips: <https://pj.freefaculty.org/R/Rtips.html>  
+3- R Graph Gallery <https://addictedtor.free.fr/graphiques/RGraphGallery.php>  
+4- Quick-R: A website for experienced users of popular statistical packages such as SAS, SPSS, Stata, and Systat (although current R users should also find it useful) <https://www.statmethods.net/index.html>  
+  
+### Books:  
+  
+1- Dalgard, P (2008) _Introductory Statistics with R_. Second edition. Springer.  
+2- Adler, J (2009) _R in a Nutshell_. O'Reilly.  
+3- Becker, R. A., Chambers, J. M. and Wilks, A. R. (1988) _The New S Language_.  Wadsworth & Brooks/Cole.   
+4- Venables, W. N. and Ripley, B. D. (2002) _Modern Applied Statistics with S._  Fourth edition.  Springer.  
+5- Murrell, P. (2005) _R Graphics_. Chapman & Hall/CRC Press.  
+
+
